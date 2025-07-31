@@ -1,0 +1,146 @@
+.App {
+  background-image: url('/bg.jpg'); /* Or whatever bg color you want */
+  min-height: 100vh;
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.todo-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  padding: 40px;
+  background-color: #f7f7f7;
+  min-height: 79vh;
+}
+
+.todo-column {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 100%;
+  max-width: 400px;
+}
+
+.todo-column h2 {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 500;
+  color: #2c3e50;
+  margin-bottom: 32px;
+  margin-top: 0;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 8px 0;
+}
+
+.task-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #bdc3c7;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+}
+
+.task-item input[type="checkbox"]:hover {
+  border-color: #95a5a6;
+}
+
+.task-item input[type="checkbox"]:checked {
+  background-color: #27ae60;
+  border-color: #27ae60;
+}
+
+.task-item input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.task-item span {
+  font-size: 18px;
+  color: #2c3e50;
+  font-weight: 400;
+  flex: 1;
+}
+
+.add-task {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  cursor: pointer;
+  padding: 8px 0;
+  font-size: 18px;
+  color: #7f8c8d;
+  font-weight: 400;
+  transition: color 0.2s ease;
+}
+
+.add-task:hover {
+  color: #2c3e50;
+}
+
+.add-task::before {
+  content: '+';
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 21px;
+  font-family: 'Your Fancy Font', sans-serif; /* match your font if custom */
+  background: transparent;
+}
+
+.top-header h1 {
+  font-size: 36px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.pomodoro {
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.theme-toggle {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+
