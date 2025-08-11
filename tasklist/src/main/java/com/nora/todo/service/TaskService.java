@@ -29,13 +29,21 @@ public class TaskService {
         }).orElseThrow(() -> new RuntimeException("Task not found with id " + id));
     }
 
-    public List<Task> getTasksByDate(String dayType){
+    public List<Task> getTasksByDate(String dayType) {
         LocalDate date;
-        switch(dayType.toLowerCase()){
-            case "today" -> date = LocalDate.now();
-            case "yesterday" -> date = LocalDate.now().minusDays(1);
-            default -> throw new IllegalArgumentException("Invalid");
+        switch(dayType.toLowerCase()) {
+            case "today todo" -> {
+                date = LocalDate.now();
+                // Return tasks exactly for today
+                return taskRepository.findByDate(date);
+            }
+            case "todo" -> {
+                date = LocalDate.now();
+                // Return tasks with date **before** today
+                return taskRepository.findByDateBefore(date);
+            }
+            default -> throw new IllegalArgumentException("Invalid dayType: " + dayType);
         }
-        return taskRepository.findByDate(date);
     }
+
 }

@@ -34,7 +34,7 @@ public class HabitService {
     public void resetAllHabits() {
         List<Habit> habits = habitRepository.findAll();
         for (Habit habit : habits) {
-            habit.setCompleted(true);
+            habit.setCompleted(false);
         }
         habitRepository.saveAll(habits);
     }

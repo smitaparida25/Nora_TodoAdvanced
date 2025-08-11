@@ -1,30 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './TodoList.css';
 
 function TodoList({ title }) {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
+  const backendUrl = title.toLowerCase() === 'habit'
+    ? 'http://localhost:8081/api/habits'
+    : 'http://localhost:8081/api/tasks';
+
+const apiPrefix = title.toLowerCase() === 'habit' ? 'habits' : 'tasks';
+
+useEffect(() => {
+  const listType = title.toLowerCase();
+  const url = listType === 'habit'
+    ? `http://localhost:8081/api/habits`
+    : `http://localhost:8081/api/tasks/by-date?when=${listType}`;
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => setTasks(data))
+    .catch(err => console.error('Failed to load tasks:', err));
+}, [title]);
+
+
+
 
   const handleAddTask = () => {
-    if (newTask.trim() === '') return;
+      if (newTask.trim() === '') return;
 
-    const taskToAdd = {
-      id: Date.now(),
-      title: newTask,
-      completed: false
+      const taskToAdd = {
+        title: newTask,
+        isCompleted: false,
+        ...(title.toLowerCase() === 'habit' ? {} : { date: new Date().toISOString().split('T')[0] })
+      };
+
+
+      const listType = title.toLowerCase();
+      fetch(backendUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(taskToAdd)
+      })
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to create task');
+          return res.json();
+        })
+        .then(createdTask => {
+          setTasks(prev => [...prev, createdTask]); // Add backend task
+          setNewTask('');
+        })
+        .catch(err => {
+          console.error(err);
+          alert('Error adding task');
+        });
     };
 
-    setTasks((prev) => [...prev, taskToAdd]);
-    setNewTask('');
-  };
 
   const handleToggle = (id) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
+    const task = tasks.find(t => t.id === id);
+    const updatedTask = { ...task, isCompleted: !task.isCompleted };
+
+    fetch(`${backendUrl}/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedTask),
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to update task');
+        return res.json();
+      })
+      .then(() => {
+        setTasks(prev =>
+          prev.map(t => (t.id === id ? updatedTask : t))
+        );
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Error updating task');
+      });
   };
+
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -40,10 +95,10 @@ function TodoList({ title }) {
           <li key={task.id} className="task-item">
             <input
               type="checkbox"
-              checked={task.completed}
+              checked={task.isCompleted}
               onChange={() => handleToggle(task.id)}
             />
-            <span style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
+            <span style={{ textDecoration: task.isCompleted ? 'line-through' : 'none' }}>
               {task.title}
             </span>
           </li>

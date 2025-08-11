@@ -5,10 +5,9 @@ import com.nora.todo.service.HabitService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/habit")
-@CrossOrigin
+@RequestMapping("/api/habits")
 public class HabitController {
 
     private final HabitService habitService;
@@ -27,8 +26,9 @@ public class HabitController {
         return habitService.getAllHabits();
     }
 
-    @PutMapping
-    public Habit updateHabit(@RequestBody Habit habit) {
+    @PutMapping("/{id}")
+    public Habit updateHabit(@PathVariable Long id, @RequestBody Habit habit) {
+        habit.setId(id);
         return habitService.updateHabit(habit);
     }
 

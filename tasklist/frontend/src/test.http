@@ -1,0 +1,8 @@
+POST http://localhost:8081/tasks
+Content-Type: application/json
+
+{
+  "title": "Test task",
+  "isCompleted": false,
+  "date": "2025-08-12"
+}
