@@ -1,5 +1,6 @@
 package com.nora.todo.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +21,8 @@ public class Task {
 
     private String title;
 
+    @JsonProperty("isCompleted")
     private boolean isCompleted;
 
-    private LocalDate date;
+    private String listType; // "today" or "todo"
 }

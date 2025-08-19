@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8081'; // Change if your backend runs on a different port
+const BASE_URL = 'http://localhost:8081/api'; // Change if your backend runs on a different port
 
 // --- TASKS ---
 export const getTasksByDate = (when) => axios.get(`${BASE_URL}/tasks/by-date?when=${when}`);
@@ -13,3 +13,5 @@ export const getHabits = () => axios.get(`${BASE_URL}/habits`);
 export const createHabit = (habit) => axios.post(`${BASE_URL}/habits`, habit);
 export const updateHabit = (id, habit) => axios.put(`${BASE_URL}/habits/${id}`, habit);
 export const deleteHabit = (id) => axios.delete(`${BASE_URL}/habits/${id}`);
+export const getTasksByList = (listType) => axios.get(`${BASE_URL}/tasks/by-list?listType=${listType}`);
+

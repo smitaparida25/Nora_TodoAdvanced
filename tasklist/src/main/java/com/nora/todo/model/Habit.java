@@ -1,5 +1,6 @@
 package com.nora.todo.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +21,9 @@ public class Habit {
 
     private String title;
 
-    private boolean completed;
+    @Column(name = "completed")
+    @JsonProperty("isCompleted")
+    private boolean isCompleted;
 
     @Column(name = "last_reset_date")
     private LocalDate lastResetDate;

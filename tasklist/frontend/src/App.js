@@ -10,7 +10,7 @@ function App() {
   };
 
   useEffect(() => {
-    document.body.className = ''; // Clear old class
+    document.body.className = '';
     document.body.classList.add(theme);
   }, [theme]);
 

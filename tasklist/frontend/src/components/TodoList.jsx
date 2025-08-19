@@ -14,11 +14,21 @@ useEffect(() => {
   const listType = title.toLowerCase();
   const url = listType === 'habit'
     ? `http://localhost:8081/api/habits`
-    : `http://localhost:8081/api/tasks/by-date?when=${listType}`;
+    : `http://localhost:8081/api/tasks/by-list?listType=${listType}`;
 
   fetch(url)
     .then(res => res.json())
-    .then(data => setTasks(data))
+    .then(data => {
+      if (Array.isArray(data)) {
+        setTasks(data);
+      } else if (data.tasks) {
+        setTasks(data.tasks);   // backend gave { tasks: [...] }
+      } else if (data.habit) {
+        setTasks(data.habit);  // backend gave { habits: [...] }
+      } else {
+        setTasks([]);           // fallback, avoid crash
+      }
+    })
     .catch(err => console.error('Failed to load tasks:', err));
 }, [title]);
 
@@ -31,7 +41,8 @@ useEffect(() => {
       const taskToAdd = {
         title: newTask,
         isCompleted: false,
-        ...(title.toLowerCase() === 'habit' ? {} : { date: new Date().toISOString().split('T')[0] })
+        ...(title.toLowerCase() === 'habit' ? {} : { date: new Date().toISOString().split('T')[0] }),
+        listType: title.toLowerCase()
       };
 
 
@@ -87,6 +98,15 @@ useEffect(() => {
     }
   };
 
+  const handleDelete = (id) =>{
+      fetch(`${backendUrl}/${id}`, {method : 'DELETE'})
+      .then(res => {
+          if(!res.ok) throw new Error('Failed to delete task');
+          setTasks(prev => prev.filter(t => t.id !== id));
+          })
+      .catch(err => console.error(err));
+  };
+
   return (
     <div className="todo-column">
       <h2>{title}</h2>
@@ -101,6 +121,19 @@ useEffect(() => {
             <span style={{ textDecoration: task.isCompleted ? 'line-through' : 'none' }}>
               {task.title}
             </span>
+            <button
+              onClick={() => handleDelete(task.id)}
+              style={{
+                border: 'none',
+                background: 'transparent',
+                padding: 0,
+                cursor: 'pointer',
+                fontSize: '24px'
+              }}
+            >
+            🚮
+            </button>
+
           </li>
         ))}
         <li className="task-item">

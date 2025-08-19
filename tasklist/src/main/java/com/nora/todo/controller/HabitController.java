@@ -4,6 +4,7 @@ import com.nora.todo.model.Habit;
 import com.nora.todo.service.HabitService;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -19,6 +20,7 @@ public class HabitController {
     @PostMapping
     public Habit addHabit(@RequestBody Habit habit) {
         return habitService.addHabit(habit);
+
     }
 
     @GetMapping
@@ -29,6 +31,7 @@ public class HabitController {
     @PutMapping("/{id}")
     public Habit updateHabit(@PathVariable Long id, @RequestBody Habit habit) {
         habit.setId(id);
+        habit.setLastResetDate(LocalDate.now());
         return habitService.updateHabit(habit);
     }
 

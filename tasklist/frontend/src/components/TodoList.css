@@ -14,17 +14,6 @@
   min-height: 79vh;
 }
 
-.todo-column {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  border-radius: 24px;
-  padding: 32px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  width: 100%;
-  max-width: 400px;
-}
-
 .todo-column h2 {
 font-family: 'Raleway', sans-serif;
   font-size: 36px;
@@ -34,15 +23,38 @@ font-family: 'Raleway', sans-serif;
   margin-top: 0;
 }
 
-.task-list {
-right: 75px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 270px;
-    position: absolute;
+.todo-column {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  max-height: 70vh;
 }
 
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.task-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.task-list::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
 .task-item {
   display: flex;
   align-items: center;

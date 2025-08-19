@@ -17,10 +17,6 @@ public class TaskController {
     public Task createTask(@RequestBody Task task){
         return taskService.createTask(task);
     }
-    @GetMapping("/by-date")
-    public List<Task> getTasksByDate(@RequestParam String when){
-        return taskService.getTasksByDate(when);
-    }
     @PutMapping("/{id}")
     public Task updateTask(@PathVariable Long id, @RequestBody Task task){
         return taskService.updateTask(id, task);
@@ -28,6 +24,11 @@ public class TaskController {
     @DeleteMapping("{id}")
     public void deleteTask(@PathVariable Long id){
         taskService.deleteTask(id);
+    }
+
+    @GetMapping("/by-list")
+    public List<Task> getTasksByList(@RequestParam String listType){
+        return taskService.getTasksByListType(listType);
     }
 
 }
