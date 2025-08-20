@@ -4,17 +4,11 @@ import './TodoList.css';
 function TodoList({ title }) {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
-  const backendUrl = title.toLowerCase() === 'habit'
-    ? 'http://localhost:8081/api/habits'
-    : 'http://localhost:8081/api/tasks';
-
-const apiPrefix = title.toLowerCase() === 'habit' ? 'habits' : 'tasks';
+  const backendUrl = 'http://localhost:8081/api/tasks';
 
 useEffect(() => {
   const listType = title.toLowerCase();
-  const url = listType === 'habit'
-    ? `http://localhost:8081/api/habits`
-    : `http://localhost:8081/api/tasks/by-list?listType=${listType}`;
+  const url = `http://localhost:8081/api/tasks/by-list?listType=${listType}`;
 
   fetch(url)
     .then(res => res.json())
@@ -23,8 +17,6 @@ useEffect(() => {
         setTasks(data);
       } else if (data.tasks) {
         setTasks(data.tasks);   // backend gave { tasks: [...] }
-      } else if (data.habit) {
-        setTasks(data.habit);  // backend gave { habits: [...] }
       } else {
         setTasks([]);           // fallback, avoid crash
       }
@@ -41,7 +33,6 @@ useEffect(() => {
       const taskToAdd = {
         title: newTask,
         isCompleted: false,
-        ...(title.toLowerCase() === 'habit' ? {} : { date: new Date().toISOString().split('T')[0] }),
         listType: title.toLowerCase()
       };
 

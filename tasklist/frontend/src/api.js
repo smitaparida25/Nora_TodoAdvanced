@@ -7,11 +7,3 @@ export const getTasksByDate = (when) => axios.get(`${BASE_URL}/tasks/by-date?whe
 export const createTask = (task) => axios.post(`${BASE_URL}/tasks`, task);
 export const updateTask = (id, task) => axios.put(`${BASE_URL}/tasks/${id}`, task);
 export const deleteTask = (id) => axios.delete(`${BASE_URL}/tasks/${id}`);
-
-// --- HABITS ---
-export const getHabits = () => axios.get(`${BASE_URL}/habits`);
-export const createHabit = (habit) => axios.post(`${BASE_URL}/habits`, habit);
-export const updateHabit = (id, habit) => axios.put(`${BASE_URL}/habits/${id}`, habit);
-export const deleteHabit = (id) => axios.delete(`${BASE_URL}/habits/${id}`);
-export const getTasksByList = (listType) => axios.get(`${BASE_URL}/tasks/by-list?listType=${listType}`);
-

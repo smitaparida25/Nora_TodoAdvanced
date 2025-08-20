@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Task {
+public class Task extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +24,5 @@ public class Task {
     @JsonProperty("isCompleted")
     private boolean isCompleted;
 
-    private String listType; // "today" or "todo"
+    private String listType;
 }
