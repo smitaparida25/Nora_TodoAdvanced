@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Task extends BaseEntity{
+public non-sealed class Task extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +21,7 @@ public class Task extends BaseEntity{
 
     private String title;
 
-    @JsonProperty("isCompleted")
-    private boolean isCompleted;
+    public boolean isCompleted;
 
     private String listType;
 }

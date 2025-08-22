@@ -8,7 +8,11 @@ import com.nora.todo.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.nora.todo.constant.TaskType.HABIT;
 
 @Service
 public class TaskService {
@@ -22,10 +26,10 @@ public class TaskService {
                 .build();
         Task save = taskRepository.save(task);
         return TaskResponse.builder()
-                .id(task.getId())
-                .title(task.getTitle())
-                .listType(task.getListType())
-                .isCompleted(task.isCompleted())
+                .id(save.getId())
+                .title(save.getTitle())
+                .listType(save.getListType())
+                .isCompleted(save.isCompleted())
                 .build();
     }
 
@@ -36,7 +40,7 @@ public class TaskService {
     public TaskResponse updateTask(Long id, TaskUpdateRequest updatedTask) {
         return taskRepository.findById(id).map(task -> {
             task.setTitle(updatedTask.getTitle());
-            task.setCompleted(updatedTask.isCompleted());
+            task.setCompleted(updatedTask.getIsCompleted());
             taskRepository.save(task);
             return TaskResponse.builder()
                     .id(task.getId())
@@ -48,7 +52,17 @@ public class TaskService {
     }
 
     public List<Task> getTasksByListType(String listType) {
-        return taskRepository.findByListType(listType);
+        List<Task> tasks = taskRepository.findByListType(listType);
+        if(HABIT.getType().equalsIgnoreCase(listType)){
+                LocalDate today = LocalDate.now();
+            for(Task t: tasks){
+                if(t.getUpdatedAt().toLocalDate().isBefore(today)) {
+                    t.setCompleted(false);
+                }
+            }
+            taskRepository.saveAll(tasks);
+        }
+        return tasks;
     }
 
 }

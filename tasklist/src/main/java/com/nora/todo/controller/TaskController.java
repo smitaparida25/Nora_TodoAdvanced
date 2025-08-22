@@ -8,6 +8,9 @@ import com.nora.todo.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 import java.util.List;
 
@@ -30,7 +33,6 @@ public class TaskController {
     public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id, @RequestBody TaskUpdateRequest task){
         TaskResponse taskResponse = taskService.updateTask(id, task);
         return ResponseEntity.status(OK.value()).body(taskResponse);  // 200 OK + JSON body
-
     }
 
     @DeleteMapping("{id}")
