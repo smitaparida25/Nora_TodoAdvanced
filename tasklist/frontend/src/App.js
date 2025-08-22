@@ -4,6 +4,7 @@ import './App.css';
 
 function App() {
   const [theme, setTheme] = useState('light');
+  const [tasks, setTasks] = useState([]);
 
   const toggleTheme = () => {
     setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
@@ -13,6 +14,13 @@ function App() {
     document.body.className = '';
     document.body.classList.add(theme);
   }, [theme]);
+
+  useEffect(() => {
+  fetch('http://localhost:8081/api/tasks')
+  .then(res => res.json())
+  .then(data => setTasks(Array.isArray(data) ? data : data.tasks || []))
+  .catch(err => console.error('Failed to fetch tasks:', err));
+  }, []);
 
   return (
     <div className="App">
@@ -26,9 +34,9 @@ function App() {
         </div>
       </header>
       <div className="todo-container">
-        <TodoList title="Today Todo" />
-        <TodoList title="Todo" />
-        <TodoList title="Habit" />
+        <TodoList title="Today Todo" tasks={tasks} setTasks={setTasks} />
+        <TodoList title="Todo" tasks={tasks} setTasks={setTasks} />
+        <TodoList title="Habit" tasks={tasks} setTasks={setTasks} />
       </div>
     </div>
   );

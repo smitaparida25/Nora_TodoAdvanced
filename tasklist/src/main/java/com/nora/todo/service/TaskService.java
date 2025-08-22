@@ -7,6 +7,7 @@ import com.nora.todo.model.Task;
 import com.nora.todo.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -51,18 +52,22 @@ public class TaskService {
         }).orElseThrow(() -> new RuntimeException("Task not found with id " + id));
     }
 
-    public List<Task> getTasksByListType(String listType) {
-        List<Task> tasks = taskRepository.findByListType(listType);
-        if(HABIT.getType().equalsIgnoreCase(listType)){
-                LocalDate today = LocalDate.now();
-            for(Task t: tasks){
-                if(t.getUpdatedAt().toLocalDate().isBefore(today)) {
-                    t.setCompleted(false);
-                }
-            }
-            taskRepository.saveAll(tasks);
-        }
+    @GetMapping
+    public List<Task> getAllTasks() {
+        List<Task> tasks = taskRepository.findAll();
+
+        LocalDate today = LocalDate.now();
+        tasks.stream()
+                .filter(t -> "habit".equalsIgnoreCase(t.getListType()))
+                .forEach(t -> {
+                    if (t.getUpdatedAt().toLocalDate().isBefore(today)) {
+                        t.setCompleted(false);
+                    }
+                });
+
+        taskRepository.saveAll(tasks); // save updated habits
         return tasks;
     }
+
 
 }

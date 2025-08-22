@@ -1,31 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './TodoList.css';
 
-function TodoList({ title }) {
-  const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState('');
-  const backendUrl = 'http://localhost:8081/api/tasks';
-
-useEffect(() => {
-  const listType = title.toLowerCase();
-  const url = `http://localhost:8081/api/tasks/by-list?listType=${listType}`;
-
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      if (Array.isArray(data)) {
-        setTasks(data);
-      } else if (data.tasks) {
-        setTasks(data.tasks);   // backend gave { tasks: [...] }
-      } else {
-        setTasks([]);           // fallback, avoid crash
-      }
-    })
-    .catch(err => console.error('Failed to load tasks:', err));
-}, [title]);
-
-
-
+function TodoList({ title, tasks, setTasks }) {
+    const [newTask, setNewTask] = useState('');
+    const backendUrl = 'http://localhost:8081/api/tasks';
+    const listType = title.toLowerCase();
+    const filteredTasks = tasks.filter(t => t.listType === listType);
 
   const handleAddTask = () => {
       if (newTask.trim() === '') return;
@@ -35,7 +15,6 @@ useEffect(() => {
         isCompleted: false,
         listType: title.toLowerCase()
       };
-
 
       const listType = title.toLowerCase();
       fetch(backendUrl, {
@@ -102,7 +81,7 @@ useEffect(() => {
     <div className="todo-column">
       <h2>{title}</h2>
       <ul className="task-list">
-        {tasks.map((task) => (
+        {filteredTasks.map((task) => (
           <li key={task.id} className="task-item">
             <input
               type="checkbox"

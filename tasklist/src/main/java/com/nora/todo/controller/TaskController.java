@@ -41,9 +41,10 @@ public class TaskController {
         return ResponseEntity.status(NO_CONTENT.value()).build();  // 204 OK + no JSON body
     }
 
-    @GetMapping("/by-list")
-    public List<Task> getTasksByList(@RequestParam String listType){
-        return taskService.getTasksByListType(listType);
+    @GetMapping
+    public List<Task> getAllTasks() {
+        return taskService.getAllTasks(); // return everything
     }
+
 
 }
