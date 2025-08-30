@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:15
+    container_name: tasklist-db
+    environment:
+      - POSTGRES_USER=taskuser
+      - POSTGRES_PASSWORD=taskpass
+      - POSTGRES_DB=taskdb
+    ports:
+      - "5432:5432"
+    restart: always
+
+  tasklist-app:
+    build: .
+    container_name: tasklist-app
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/taskdb
+      - SPRING_DATASOURCE_USERNAME=taskuser
+      - SPRING_DATASOURCE_PASSWORD=taskpass
+    depends_on:
+      - db
+    restart: always
