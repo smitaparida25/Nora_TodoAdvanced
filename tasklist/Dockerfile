@@ -17,8 +17,8 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 # Expose the port Render will use
-ENV PORT=8081
 EXPOSE 8081
 
 # Run the app
 ENTRYPOINT ["java","-jar","app.jar"]
+
