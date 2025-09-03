@@ -16,7 +16,7 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
-  fetch('http://localhost:8081/api/tasks')
+  fetch('https://nora-1qpm.onrender.com/api/tasks')
   .then(res => res.json())
   .then(data => setTasks(Array.isArray(data) ? data : data.tasks || []))
   .catch(err => console.error('Failed to fetch tasks:', err));
