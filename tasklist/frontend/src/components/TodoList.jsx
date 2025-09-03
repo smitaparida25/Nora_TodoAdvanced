@@ -3,7 +3,7 @@ import './TodoList.css';
 
 function TodoList({ title, tasks, setTasks }) {
     const [newTask, setNewTask] = useState('');
-    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+    const backendUrl = "https://nora-1qpm.onrender.com/api/tasks";
     const listType = title.toLowerCase();
     const filteredTasks = tasks.filter(t => t.listType === listType);
 
